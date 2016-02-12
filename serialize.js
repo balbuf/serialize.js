@@ -43,11 +43,10 @@
 					+ keys.reduce(function(running, key){
 						return running + PHP.serialize(key) + PHP.serialize(data[key]);
 					}, '') + '}';
-			default:
-				// treat anything else as null
-				// this includes undefined, since PHP does not have that type
-				return 'N;';
 		}
+		// treat anything else as null
+		// this includes undefined, since PHP does not have that type
+		return 'N;';
 	};
 
 })();

@@ -13,10 +13,11 @@
 	/**
 	 * Serialize a JS value for PHP consumption
 	 * @param  {mixed} data  any piece of data represented in JS
-	 * @param  {bool} assoc  whether to convey objects as associative arrays
+	 * @param  {bool} assoc  whether to convey objects as associative arrays (default: false)
+	 * @param  {bool} nonEnum whether to serialize non-enumerable properties (default: false)
 	 * @return {string}      the serialized value as a string
 	 */
-	PHP.serialize = function(data, assoc) {
+	PHP.serialize = function(data, assoc, nonEnum) {
 		switch(typeof data) {
 			case 'string':
 				return 's:' + data.length + ':"' + data + '";';
@@ -37,7 +38,7 @@
 					}
 					return out + '}';
 				}
-				var keys = Object.keys(data);
+				var keys = Object[nonEnum?'getOwnPropertyNames':'keys'](data);
 				return (assoc?'a:':'O:8:"stdClass":') + keys.length + ':{'
 					+ keys.reduce(function(running, key){
 						return running + PHP.serialize(key) + PHP.serialize(data[key]);

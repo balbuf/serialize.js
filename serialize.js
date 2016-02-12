@@ -34,14 +34,14 @@
 				if (Array.isArray(data)) {
 					// for loop is the best way to handle the possibility of sparse arrays
 					for(var out='a:'+data.length+':{',i=0; i<data.length; i++) {
-						out += PHP.serialize(i) + PHP.serialize(data[i]);
+						out += PHP.serialize(i) + PHP.serialize(data[i], assoc, nonEnum);
 					}
 					return out + '}';
 				}
 				var keys = Object[nonEnum?'getOwnPropertyNames':'keys'](data);
 				return (assoc?'a:':'O:8:"stdClass":') + keys.length + ':{'
 					+ keys.reduce(function(running, key){
-						return running + PHP.serialize(key) + PHP.serialize(data[key]);
+						return running + PHP.serialize(key) + PHP.serialize(data[key], assoc, nonEnum);
 					}, '') + '}';
 		}
 		// treat anything else as null

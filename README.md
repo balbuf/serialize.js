@@ -53,6 +53,21 @@ Types that JavaScript reports as `"object"` via `typeof` that have an analogous 
 "plain" objects and only their own properties (as opposed to prototypical properties) 
 are serialized. The JavaScript value of `undefined` is conveyed as `NULL` since that is the closest equivalent in PHP.
 
+Though not widely used<sup>1</sup>, JavaScript supports the concept of sparse arrays, wherein an array 
+has fewer defined values than its length property reports. For example:
+```js
+var arr = ['so',,,'far',,,'away'];
+arr.length; // 7
+arr.forEach(function(val){console.log(val);});
+// so
+// far
+// away
+```
+(Notice that when iterating on the array, only the three defined values are handled.) PHP does not have a similar 
+concept of sparse arrays (e.g. `[ 0 => 'foo', 60 => 'bar' ]` does not implicitly set keys 1-59), so to
+faithfully represent the complete picture of a sparse JS array, the undefined indices will be filled in with `null` values.
+
+### Analogous Types
 | JavaScript Type  | PHP Type |
 | ------------ | ------------- |
 | string | string |
@@ -71,3 +86,6 @@ You probably won't. However, I was prompted to write this function when I had to
 POST data containing a PHP-serialized object. So perhaps you will run into a scenario like that. If not, 
 it's still interesting to take a look under the hood and see how PHP's
 [serialize()](http://php.net/manual/en/function.serialize.php) function works!
+
+---
+<sup>1</sup> I have no citation, but it's probably true.

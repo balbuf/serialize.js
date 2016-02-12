@@ -77,6 +77,7 @@ faithfully represent the complete picture of a sparse JS array, the undefined in
 | +/-Infinity | +/-INF |
 | null | null |
 | undefined | null |
+| boolean | boolean |
 | array | array |
 | object | stdObj or assoc array |
 | function | stdObj or assoc array |

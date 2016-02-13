@@ -28,6 +28,17 @@
 	};
 
 	/**
+	 * Determine if the value is an integer.
+	 * @param  {mixed}  value value to test
+	 * @return {bool}      determination
+	 */
+	PHP.is_int = function(value) {
+		return typeof value === 'number' &&
+			isFinite(value) &&
+			Math.floor(value) === value;
+	};
+
+	/**
 	 * Serialize a JS value for PHP consumption
 	 * @param  {mixed} data  any piece of data represented in JS
 	 * @param  {bool} assoc  whether to convey objects as associative arrays (default: false)
@@ -42,7 +53,7 @@
 				if (isNaN(data)) return 'd:NAN;';
 				if (!isFinite(data)) return 'd:' + (data>0?'':'-') + 'INF;';
 				// integers in scientific notation must be conveyed as doubles
-				if (Number.isInteger(data)&&data.toString().search(/e/i)===-1) return 'i:' + data + ';';
+				if (PHP.is_int(data)&&data.toString().search(/e/i)===-1) return 'i:' + data + ';';
 				return 'd:' + data + ';';
 			case 'boolean':
 				return 'b:' + +data + ';';

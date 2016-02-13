@@ -25,7 +25,7 @@
 			if (code >= 0xDC00 && code <= 0xDFFF) i--; //trail surrogate
 		}
 		return s;
-	}
+	};
 
 	/**
 	 * Serialize a JS value for PHP consumption
@@ -41,7 +41,8 @@
 			case 'number':
 				if (isNaN(data)) return 'd:NAN;';
 				if (!isFinite(data)) return 'd:' + (data>0?'':'-') + 'INF;';
-				if (Number.isInteger(data)) return 'i:' + data + ';';
+				// integers in scientific notation must be conveyed as doubles
+				if (Number.isInteger(data)&&data.toString().search(/e/i)===-1) return 'i:' + data + ';';
 				return 'd:' + data + ';';
 			case 'boolean':
 				return 'b:' + +data + ';';

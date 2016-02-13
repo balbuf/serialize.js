@@ -11,6 +11,23 @@
 	window.PHP = window.PHP || {};
 
 	/**
+	 * Like PHP's strlen(), return the byte length of a string.
+	 * Taken from: http://stackoverflow.com/a/23329386/5803236
+	 * @param  {string} str the string
+	 * @return {int}     byte length, assuming utf8
+	 */
+	PHP.strlen = function(str) {
+		var s = str.length, code;
+		for (var i=s-1; i>=0; i--) {
+			code = str.charCodeAt(i);
+			if (code > 0x7f && code <= 0x7ff) s++;
+			else if (code > 0x7ff && code <= 0xffff) s+=2;
+			if (code >= 0xDC00 && code <= 0xDFFF) i--; //trail surrogate
+		}
+		return s;
+	}
+
+	/**
 	 * Serialize a JS value for PHP consumption
 	 * @param  {mixed} data  any piece of data represented in JS
 	 * @param  {bool} assoc  whether to convey objects as associative arrays (default: false)
@@ -20,7 +37,7 @@
 	PHP.serialize = function(data, assoc, nonEnum) {
 		switch(typeof data) {
 			case 'string':
-				return 's:' + data.length + ':"' + data + '";';
+				return 's:' + PHP.strlen(data) + ':"' + data + '";';
 			case 'number':
 				if (isNaN(data)) return 'd:NAN;';
 				if (!isFinite(data)) return 'd:' + (data>0?'':'-') + 'INF;';

@@ -4,6 +4,7 @@ are fully supported.
 
 **Methods:**
 > _string_ serialize( _mixed_ data [, _bool_ assoc = false [, _bool_ nonEnum = false ]] )
+
 > _mixed_ unserialize( _string_ str )
 
 ## Examples

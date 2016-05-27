@@ -19,7 +19,7 @@ PHP.serialize(Infinity); // d:INF;
 PHP.serialize(null); // N;
 ```
 The second parameter, `assoc`, dictates whether objects will be conveyed as associative arrays to PHP.
-By default, they will be represented as standard objects (`stdObj`).
+By default, they will be represented as standard objects (`stdClass`).
 ```js
 PHP.serialize({P:'pretty',Y:'young',T:'thing'}, false); // O:8:"stdClass":3:{s:1:"P";s:6:"pretty";s:1:"Y";s:5:"young";s:1:"T";s:5:"thing";}
 PHP.serialize({P:'pretty',Y:'young',T:'thing'}, true); // a:3:{s:1:"P";s:6:"pretty";s:1:"Y";s:5:"young";s:1:"T";s:5:"thing";}
@@ -60,7 +60,7 @@ PHP.unserialize('O:6:"Person":3:{s:9:"firstName";s:3:"Bob";s:8:"lastName";s:6:"L
 Associative arrays will be unserialized as objects in JS, though bear in mind that there is no guarantee that
 the order of keys will be preserved. Any PHP object type will be unserialized as an instance of `Object`.
 
-Be prepared that `unserialize()` will throw an exception if it cannot parse the serialized string, or if it was
+Be prepared that `unserialize()` will throw an exception if it cannot parse the serialized string or if it was
 passed a value other than a string. The exception message indicates the problem offset in the same way as
 the notice issued by PHP's function.
 
